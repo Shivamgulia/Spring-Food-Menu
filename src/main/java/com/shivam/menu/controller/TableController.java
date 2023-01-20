@@ -26,7 +26,7 @@ public class TableController {
     }
 
     @PatchMapping("/tables")
-    public Table updateTable(@RequestBody Table table) throws Exception {
+    public Table updateTable(@RequestBody Table table)  {
         return tableService.updateTable(table);
     }
 

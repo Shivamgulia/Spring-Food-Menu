@@ -10,7 +10,7 @@ public interface TableService {
 
     public Table saveTable(Table table);
 
-    public Table updateTable(Table table) throws Exception;
+    public Table updateTable(Table table);
 
     public void deleteTable(Table table) throws Exception;
 }

@@ -26,7 +26,7 @@ public class TableServiceImpl implements TableService{
     }
 
     @Override
-    public Table updateTable(Table table) throws Exception {
+    public Table updateTable(Table table) {
         Optional<Table> existingTable = tableRepository.findById(table.getId());
         if (existingTable.isPresent()) {
             Table tab = existingTable.get();
@@ -34,7 +34,13 @@ public class TableServiceImpl implements TableService{
             if(orders != null) {
                 int n = table.getOrder().size();
                 for (int i = 0; i < n; i++) {
-                    orders.add(table.getOrder().get(i));
+//                    if(orders.contains(table.getOrder().get(i))) {
+//                        int index = orders.indexOf(table.getOrder().get(i));
+//                        orders.get(index).setAmount(orders.get(index).getAmount() + table.getOrder().get(i).getAmount());
+//                    }
+//                    else {
+                        orders.add(table.getOrder().get(i));
+//                    }
                 }
                 tab.setOrder(orders);
                 return tableRepository.save(tab);
@@ -44,7 +50,10 @@ public class TableServiceImpl implements TableService{
                 return tableRepository.save(tab);
             }
         }
-        throw new Exception("Table not Found Exception") ;
+
+        else {
+            return tableRepository.save(table);
+        }
     }
 
     @Override
