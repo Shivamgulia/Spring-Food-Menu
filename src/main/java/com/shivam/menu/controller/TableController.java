@@ -35,4 +35,9 @@ public class TableController {
          tableService.deleteTable(table);
     }
 
+    @PostMapping("/tables/{id}")
+    public void orderCompleted(@PathVariable int id) throws Exception {
+        tableService.orderCompleted(id);
+    }
+
 }

@@ -13,4 +13,6 @@ public interface TableService {
     public Table updateTable(Table table);
 
     public void deleteTable(Table table) throws Exception;
+
+    public void orderCompleted(int id) throws Exception;
 }

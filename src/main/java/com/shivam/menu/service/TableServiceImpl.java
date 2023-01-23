@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TableServiceImpl implements TableService{
+public class TableServiceImpl implements TableService {
 
     @Autowired
     public TableRepository tableRepository;
@@ -31,7 +31,7 @@ public class TableServiceImpl implements TableService{
         if (existingTable.isPresent()) {
             Table tab = existingTable.get();
             List<Food> orders = tab.getOrder();
-            if(orders != null) {
+            if (orders != null) {
                 int n = table.getOrder().size();
                 for (int i = 0; i < n; i++) {
 //                    if(orders.contains(table.getOrder().get(i))) {
@@ -39,19 +39,16 @@ public class TableServiceImpl implements TableService{
 //                        orders.get(index).setAmount(orders.get(index).getAmount() + table.getOrder().get(i).getAmount());
 //                    }
 //                    else {
-                        orders.add(table.getOrder().get(i));
+                    orders.add(table.getOrder().get(i));
 //                    }
                 }
                 tab.setOrder(orders);
                 return tableRepository.save(tab);
-            }
-            else {
+            } else {
                 tab.setOrder(table.getOrder());
                 return tableRepository.save(tab);
             }
-        }
-
-        else {
+        } else {
             return tableRepository.save(table);
         }
     }
@@ -59,10 +56,24 @@ public class TableServiceImpl implements TableService{
     @Override
     public void deleteTable(Table table) throws Exception {
         Optional<Table> temp = tableRepository.findById(table.getId());
-        if(temp.isPresent()) {
+        if (temp.isPresent()) {
             tableRepository.delete(temp.get());
-            return ;
+            return;
         }
         throw new Exception("Table Not Found Exception");
+    }
+
+    @Override
+    public void orderCompleted(int id)  throws Exception{
+
+        Optional<Table> temp = tableRepository.findById(id);
+        if(temp.isPresent()) {
+            Table table = temp.get();
+            table.setOrder(null);
+            tableRepository.save(table);
+            return;
+        }
+        throw new Exception("Table Not Found Exception");
+
     }
 }
