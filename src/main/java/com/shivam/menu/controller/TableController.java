@@ -36,8 +36,9 @@ public class TableController {
     }
 
     @PostMapping("/tables/{id}")
-    public void orderCompleted(@PathVariable int id) throws Exception {
+    public List<Table> orderCompleted(@PathVariable int id) throws Exception {
         tableService.orderCompleted(id);
+        return tableService.findAll();
     }
 
 }
