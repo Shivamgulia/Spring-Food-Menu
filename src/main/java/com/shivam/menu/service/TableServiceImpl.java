@@ -6,6 +6,7 @@ import com.shivam.menu.entity.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,17 +33,8 @@ public class TableServiceImpl implements TableService {
             Table tab = existingTable.get();
             List<Food> orders = tab.getOrder();
             if (orders != null) {
-                int n = table.getOrder().size();
-                for (int i = 0; i < n; i++) {
-//                    if(orders.contains(table.getOrder().get(i))) {
-//                        int index = orders.indexOf(table.getOrder().get(i));
-//                        orders.get(index).setAmount(orders.get(index).getAmount() + table.getOrder().get(i).getAmount());
-//                    }
-//                    else {
-                    orders.add(table.getOrder().get(i));
-//                    }
-                }
-                tab.setOrder(orders);
+                List<Food> newOrders = sort(orders, table.getOrder());
+                tab.setOrder(newOrders);
                 return tableRepository.save(tab);
             } else {
                 tab.setOrder(table.getOrder());
@@ -75,5 +67,26 @@ public class TableServiceImpl implements TableService {
         }
         throw new Exception("Table Not Found Exception");
 
+    }
+
+
+    public List<Food> sort(List<Food> oldOrders, List<Food> newOrders) {
+        List<Food> result = oldOrders;
+        for(int i = 0; i < newOrders.size(); i++) {
+            boolean flag = true;
+            for(int j = 0; j < result.size(); j++) {
+                if(result.get(j).getId() == newOrders.get(i).getId() ) {
+                    flag = false;
+                    result.get(j).setAmount(result.get(j).getAmount() + newOrders.get(i).getAmount());
+                    break;
+                }
+
+            }
+            if(flag) {
+                result.add(newOrders.get(i));
+            }
+        }
+
+        return result;
     }
 }
